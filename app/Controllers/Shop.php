@@ -29,13 +29,35 @@ class Shop extends BaseController
     // Halaman daftar produk (untuk customer)
     public function products()
     {
-        $data = [
-            'products' => $this->productModel
-                ->select('products.*, categories.name as category_name')
-                ->join('categories', 'categories.id = products.category_id')
-                ->findAll()
+        $filters = [
+            'flower_type'  => $this->request->getGet('flower_type'),
+            'flower_color' => $this->request->getGet('flower_color'),
+            'min_price'    => $this->request->getGet('min_price'),
+            'max_price'    => $this->request->getGet('max_price'),
         ];
 
-        return view('shop/products', $data);
+        $builder = $this->productModel
+            ->select('products.*, categories.name as category_name')
+            ->join('categories', 'categories.id = products.category_id');
+
+        if (!empty($filters['flower_type'])) {
+            $builder->where('flower_type', $filters['flower_type']);
+        }
+
+        if (!empty($filters['flower_color'])) {
+            $builder->where('flower_color', $filters['flower_color']);
+        }
+
+        if (!empty($filters['min_price'])) {
+            $builder->where('price >=', $filters['min_price']);
+        }
+
+        if (!empty($filters['max_price'])) {
+            $builder->where('price <=', $filters['max_price']);
+        }
+
+        $products = $builder->findAll();
+
+        return view('shop/products', ['products' => $products]);
     }
 }
