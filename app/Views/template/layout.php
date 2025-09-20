@@ -36,6 +36,9 @@
     <main class="py-8">
         <?= $this->renderSection('content'); ?>
     </main>
+
+    <!-- Footer -->
+    <?= $this->include('template/footer'); ?>
 </body>
 
 </html>

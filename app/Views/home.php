@@ -21,8 +21,8 @@
                     Selamat Datang di <span class="text-pink-500">Diana</span>Art
                 </h1>
                 <p class="mt-4 text-base sm:text-lg text-gray-500">
-                    Menyediakan koleksi seni dan kerajinan berkualitas tinggi untuk mempercantik ruang dan gaya hidup
-                    Anda.
+                    Temukan koleksi eksklusif seni dan kerajinan tangan dengan sentuhan keindahan dan makna.
+                    Setiap karya dipersembahkan dengan kualitas terbaik untuk mempercantik ruang, melengkapi gaya hidup, dan menghadirkan kehangatan di setiap momen Anda.
                 </p>
                 <div class="mt-6">
                     <a href="/shop/categories"
@@ -34,13 +34,13 @@
 
             <!-- Foto -->
             <div class="lg:w-1/2 grid grid-cols-2 gap-4">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg"
+                <img src="<?= base_url('img/homesatu.jpg'); ?>"
                     alt="Produk DianaArt" class="rounded-lg object-cover w-full h-40 sm:h-56 lg:h-64">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg"
+                <img src="<?= base_url('img/homedua.jpg'); ?>"
                     alt="Produk DianaArt" class="rounded-lg object-cover w-full h-40 sm:h-56 lg:h-64">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg"
+                <img src="<?= base_url('img/hometiga.jpg'); ?>"
                     alt="Produk DianaArt" class="rounded-lg object-cover w-full h-40 sm:h-56 lg:h-64">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg"
+                <img src="<?= base_url('img/homeempat.jpg'); ?>"
                     alt="Produk DianaArt" class="rounded-lg object-cover w-full h-40 sm:h-56 lg:h-64">
             </div>
         </div>
