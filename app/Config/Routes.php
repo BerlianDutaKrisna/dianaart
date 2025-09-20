@@ -7,24 +7,43 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+// Auth
 $routes->get('/register', 'User::register');
 $routes->post('/user/save', 'User::save');
-
 $routes->get('/login', 'User::login');
 $routes->post('/login/auth', 'User::auth');
 $routes->get('/logout', 'User::logout');
 
 $routes->get('/dashboard', 'Dashboard::index');
+$routes->get('/shop/categories', 'Shop::categories');
+$routes->get('/shop/products', 'Shop::products');
 
-// CRUD user
-$routes->get('/user', 'User::index');
-$routes->get('/user/edit/(:num)', 'User::edit/$1');
-$routes->post('/user/update/(:num)', 'User::update/$1');
-$routes->get('/user/delete/(:num)', 'User::delete/$1');
+// CRUD User
+$routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'User::index');
+    $routes->get('edit/(:num)', 'User::edit/$1');
+    $routes->post('update/(:num)', 'User::update/$1');
+    $routes->get('delete/(:num)', 'User::delete/$1');
+});
 
-$routes->get('/category', 'Category::index');
-$routes->get('/category/create', 'Category::create');
-$routes->post('/category/store', 'Category::store');
-$routes->get('/category/edit/(:num)', 'Category::edit/$1');
-$routes->post('/category/update/(:num)', 'Category::update/$1');
-$routes->get('/category/delete/(:num)', 'Category::delete/$1');
+// CRUD Category
+$routes->group('category', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Category::index');
+    $routes->get('show', 'Category::show');
+    $routes->get('create', 'Category::create');
+    $routes->post('store', 'Category::store');
+    $routes->get('edit/(:num)', 'Category::edit/$1');
+    $routes->post('update/(:num)', 'Category::update/$1');
+    $routes->get('delete/(:num)', 'Category::delete/$1');
+});
+
+// CRUD Product
+$routes->group('products', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Product::index');
+    $routes->get('create', 'Product::create');
+    $routes->post('store', 'Product::store');
+    $routes->get('edit/(:num)', 'Product::edit/$1');
+    $routes->post('update/(:num)', 'Product::update/$1');
+    $routes->get('delete/(:num)', 'Product::delete/$1');
+    $routes->get('show/(:num)', 'Product::show/$1');
+});

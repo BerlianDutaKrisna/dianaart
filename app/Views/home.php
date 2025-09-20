@@ -2,7 +2,6 @@
 
 <?= $this->section('title'); ?>Home<?= $this->endSection(); ?>
 
-<!-- Navbar khusus home -->
 <?= $this->section('navbar'); ?>
 <nav class="space-x-4 text-sm font-medium">
     <a href="/login" class="text-gray-700 hover:text-pink-600">Login</a>
@@ -26,7 +25,7 @@
                     Anda.
                 </p>
                 <div class="mt-6">
-                    <a href="/category"
+                    <a href="/shop/categories"
                         class="inline-block rounded-md bg-pink-500 px-6 py-3 text-white font-medium hover:bg-pink-700 transition">
                         Lihat Koleksi Produk
                     </a>

@@ -1,7 +1,17 @@
 <?= $this->extend('template/layout'); ?>
-<?= $this->section('title'); ?>Dashboard<?= $this->endSection(); ?>
-<?= $this->section('content'); ?>
 
+<?= $this->section('title'); ?>Dashboard<?= $this->endSection(); ?>
+
+<?= $this->section('navbar'); ?>
+<nav class="space-x-4 text-sm font-medium">
+    <a href="/dashboard" class="text-gray-700 hover:text-pink-600">Dashboard</a>
+    <a href="/category" class="text-gray-700 hover:text-pink-600">Categories</a>
+    <a href="/products" class="text-gray-700 hover:text-pink-600">Products</a>
+    <a href="/logout" class="text-gray-700 hover:text-pink-600">Logout</a>
+</nav>
+<?= $this->endSection(); ?>
+
+<?= $this->section('content'); ?>
 <div class="bg-gray-100 min-h-screen">
     <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard Admin</h1>
@@ -38,7 +48,7 @@
                 <p class="mt-2 text-gray-600 text-sm">
                     Tambah, edit, dan hapus produk.
                 </p>
-                <a href="<?= base_url('product'); ?>"
+                <a href="<?= base_url('products'); ?>"
                     class="mt-4 inline-block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600">
                     Lihat Produk
                 </a>
