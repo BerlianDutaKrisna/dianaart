@@ -1,7 +1,18 @@
 <?= $this->extend('template/layout'); ?>
-<?= $this->section('title'); ?>Edit Product<?= $this->endSection(); ?>
-<?= $this->section('content'); ?>
 
+<?= $this->section('title'); ?>Edit Products<?= $this->endSection(); ?>
+
+<?= $this->section('navbar'); ?>
+<nav class="space-x-4 text-sm font-medium">
+    <a href="/dashboard" class="text-gray-700 hover:text-pink-600">Dashboard</a>
+    <a href="/category" class="text-gray-700 hover:text-pink-600">Categories</a>
+    <a href="/products" class="text-gray-700 hover:text-pink-600">Products</a>
+    <a href="/users" class="text-gray-700 hover:text-pink-600">Users</a>
+    <a href="/logout" class="text-gray-700 hover:text-pink-600">Logout</a>
+</nav>
+<?= $this->endSection(); ?>
+
+<?= $this->section('content'); ?>
 <div class="p-6">
     <h1 class="text-2xl font-bold mb-4">Edit Product</h1>
 

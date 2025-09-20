@@ -1,6 +1,16 @@
-<?= $this->extend('template/layout') ?>
+<?= $this->extend('template/layout'); ?>
 
-<?= $this->section('title') ?>Tambah Kategori<?= $this->endSection() ?>
+<?= $this->section('title'); ?>Create Categories<?= $this->endSection(); ?>
+
+<?= $this->section('navbar'); ?>
+<nav class="space-x-4 text-sm font-medium">
+    <a href="/dashboard" class="text-gray-700 hover:text-pink-600">Dashboard</a>
+    <a href="/category" class="text-gray-700 hover:text-pink-600">Categories</a>
+    <a href="/products" class="text-gray-700 hover:text-pink-600">Products</a>
+    <a href="/users" class="text-gray-700 hover:text-pink-600">Users</a>
+    <a href="/logout" class="text-gray-700 hover:text-pink-600">Logout</a>
+</nav>
+<?= $this->endSection(); ?>
 
 <?= $this->section('content') ?>
 <div class="max-w-2xl mx-auto py-10">
@@ -20,26 +30,31 @@
             <label for="name" class="block font-medium">Nama Kategori</label>
             <input type="text" name="name" id="name" value="<?= old('name') ?>"
                 class="border rounded w-full p-2">
-            <?php if ($validation->hasError('name')): ?>
-                <div class="text-red-500"><?= $validation->getError('name') ?></div>
+            <?php if (isset($validation) && $validation->hasError('name')): ?>
+                <div class="text-red-500 text-sm mt-1"><?= $validation->getError('name') ?></div>
             <?php endif; ?>
         </div>
 
-        <!-- Slug -->
+        <!-- Description -->
         <div>
-            <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-            <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-pink-500 focus:ring-pink-500 sm:text-sm"><?= old('description') ?></textarea>
+            <label for="description" class="block font-medium">Deskripsi</label>
+            <textarea name="description" id="description" rows="4"
+                class="border rounded w-full p-2"><?= old('description') ?></textarea>
+            <?php if (isset($validation) && $validation->hasError('description')): ?>
+                <div class="text-red-500 text-sm mt-1"><?= $validation->getError('description') ?></div>
+            <?php endif; ?>
         </div>
 
         <!-- Image -->
         <div>
             <label for="image" class="block font-medium">Image</label>
             <input type="file" name="image" id="image" class="border rounded w-full p-2">
-            <?php if ($validation->hasError('image')): ?>
-                <div class="text-red-500"><?= $validation->getError('image') ?></div>
+            <?php if (isset($validation) && $validation->hasError('image')): ?>
+                <div class="text-red-500 text-sm mt-1"><?= $validation->getError('image') ?></div>
             <?php endif; ?>
         </div>
 
+        <!-- Submit Button -->
         <button type="submit"
             class="bg-pink-500 text-white px-6 py-2 rounded hover:bg-pink-700 transition">
             Simpan
