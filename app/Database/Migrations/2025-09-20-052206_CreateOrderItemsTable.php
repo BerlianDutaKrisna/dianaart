@@ -15,6 +15,8 @@ class CreateOrderItemsTable extends Migration
             'qty'        => ['type' => 'INT', 'default' => 1],
             'price'      => ['type' => 'DECIMAL', 'constraint' => '10,2'],
             'subtotal'   => ['type' => 'DECIMAL', 'constraint' => '10,2'],
+            'created_at'  => ['type' => 'DATETIME', 'null' => true],
+            'updated_at'  => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
         $this->forge->addForeignKey('order_id', 'orders', 'id', 'CASCADE', 'CASCADE');
