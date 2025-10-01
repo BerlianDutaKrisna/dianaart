@@ -21,6 +21,13 @@
             class="w-full border rounded p-2" required>
         <input type="email" name="email" placeholder="Email" value="<?= old('email') ?>"
             class="w-full border rounded p-2" required>
+        <div>
+            <label for="birth_date" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
+            <input type="date" id="birth_date" name="birth_date" value="<?= old('birth_date') ?>"
+                class="w-full border rounded p-2" required>
+        </div>
+        <input type="text" name="phone" placeholder="Nomor HP" value="<?= old('phone') ?>"
+            class="w-full border rounded p-2" required>
         <input type="password" name="password" placeholder="Password"
             class="w-full border rounded p-2" required>
         <button type="submit" class="w-full bg-pink-500 text-white py-2 rounded hover:bg-pink-700 transition">

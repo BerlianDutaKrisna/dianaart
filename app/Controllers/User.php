@@ -40,6 +40,8 @@ class User extends BaseController
             'name'     => $this->request->getPost('name'),
             'email'    => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
+            'birth_date' => $this->request->getPost('birth_date'),
+            'phone'     => $this->request->getPost('phone'),
             'role'     => 'customer',
         ]);
 
@@ -57,9 +59,7 @@ class User extends BaseController
     {
         $email = $this->request->getPost('email');
         $password = $this->request->getPost('password');
-
         $user = $this->userModel->where('email', $email)->first();
-
         if ($user && password_verify($password, $user['password'])) {
             $this->session->set([
                 'isLoggedIn' => true,
@@ -72,7 +72,7 @@ class User extends BaseController
             if ($user['role'] === 'admin') {
                 return redirect()->to('/dashboard')->with('success', 'Login berhasil! Selamat datang Admin.');
             } else { // customer
-                return redirect()->to('/category')->with('success', 'Login berhasil! Selamat datang.');
+                return redirect()->to('/')->with('success', 'Login berhasil! Selamat datang.');
             }
         } else {
             return redirect()->back()->with('error', 'Email atau password salah')->withInput();
