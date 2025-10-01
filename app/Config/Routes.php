@@ -47,3 +47,11 @@ $routes->group('products', ['namespace' => 'App\Controllers'], function ($routes
     $routes->get('delete/(:num)', 'Product::delete/$1');
     $routes->get('show/(:num)', 'Product::show/$1');
 });
+
+$routes->get('classes', 'Classes::index');
+$routes->get('classes/create', 'Classes::create');
+$routes->post('classes/store', 'Classes::store');
+$routes->get('classes/edit/(:num)', 'Classes::edit/$1');
+$routes->post('classes/update/(:num)', 'Classes::update/$1');
+$routes->get('classes/show/(:num)', 'Classes::show/$1');
+$routes->post('classes/delete/(:num)', 'Classes::delete/$1');

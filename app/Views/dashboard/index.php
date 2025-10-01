@@ -1,61 +1,26 @@
-<?= $this->extend('template/layout'); ?>
-
-<?= $this->section('title'); ?>Dashboard<?= $this->endSection(); ?>
-
-<?= $this->section('navbar'); ?>
-<nav class="space-x-4 text-sm font-medium">
-    <a href="/dashboard" class="text-gray-700 hover:text-pink-600">Dashboard</a>
-    <a href="/category" class="text-gray-700 hover:text-pink-600">Categories</a>
-    <a href="/products" class="text-gray-700 hover:text-pink-600">Products</a>
-    <a href="/logout" class="text-gray-700 hover:text-pink-600">Logout</a>
-</nav>
-<?= $this->endSection(); ?>
+<?= $this->extend('template/app_layout'); ?>
+<?= $this->section('title'); ?>Dashboard — DianaArt<?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
-<div class="bg-gray-100 min-h-screen">
-    <div class="max-w-7xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-6">Dashboard Admin</h1>
+<div class="min-h-full">
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-            <!-- User -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-800">Kelola User</h2>
-                <p class="mt-2 text-gray-600 text-sm">
-                    Tambah, edit, dan hapus data user.
-                </p>
-                <a href="<?= base_url('user'); ?>"
-                    class="mt-4 inline-block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600">
-                    Lihat User
-                </a>
-            </div>
-
-            <!-- Category -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-800">Kelola Kategori</h2>
-                <p class="mt-2 text-gray-600 text-sm">
-                    Tambah, edit, dan hapus kategori produk.
-                </p>
-                <a href="<?= base_url('category'); ?>"
-                    class="mt-4 inline-block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600">
-                    Lihat Kategori
-                </a>
-            </div>
-
-            <!-- Produk -->
-            <div class="bg-white shadow rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-800">Kelola Produk</h2>
-                <p class="mt-2 text-gray-600 text-sm">
-                    Tambah, edit, dan hapus produk.
-                </p>
-                <a href="<?= base_url('products'); ?>"
-                    class="mt-4 inline-block px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600">
-                    Lihat Produk
-                </a>
-            </div>
-
+    <!-- Page header -->
+    <header class="relative bg-white shadow-sm">
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900">Dashboard</h1>
         </div>
-    </div>
-</div>
+    </header>
 
+    <!-- Main content -->
+    <main>
+        <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+            <!-- Your content -->
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                <div class="rounded-lg bg-white p-6 shadow">Card 1</div>
+                <div class="rounded-lg bg-white p-6 shadow">Card 2</div>
+                <div class="rounded-lg bg-white p-6 shadow">Card 3</div>
+            </div>
+        </div>
+    </main>
+</div>
 <?= $this->endSection(); ?>

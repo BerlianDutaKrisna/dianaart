@@ -13,6 +13,7 @@ class CreateClassesTable extends Migration
             'title'       => ['type' => 'VARCHAR', 'constraint' => 150],
             'description' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'price'       => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => 0.00],
+            'image'       => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'is_active'   => ['type' => 'TINYINT', 'constraint' => 1, 'default' => 1],
             'created_at'  => ['type' => 'DATETIME', 'null' => true],
             'updated_at'  => ['type' => 'DATETIME', 'null' => true],
