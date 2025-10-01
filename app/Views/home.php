@@ -20,7 +20,7 @@
     <a href="#" class="text-sm font-semibold text-gray-900 hover:text-pink-500">Features</a>
     <a href="#" class="text-sm font-semibold text-gray-900 hover:text-pink-500">Marketplace</a>
     <a href="#" class="text-sm font-semibold text-gray-900 hover:text-pink-500">Company</a>
-    <a href="<?= base_url('/login') ?>" class="ml-6 text-sm font-semibold text-gray-900 hover:text-pink-500">Log in <span aria-hidden="true">&rarr;</span></a>
+    <a href="<?= base_url('/login') ?>" class="text-sm font-semibold text-gray-900 hover:text-pink-500">Log in</a>
 </nav>
 
 <!-- Dialog mobile menu -->
@@ -60,74 +60,53 @@
 </el-dialog>
 <?= $this->endSection(); ?>
 
-
 <?= $this->section('content'); ?>
-<div class="bg-white">
-    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
-        <h2 class="text-2xl font-bold tracking-tight text-gray-900">Customers also purchased</h2>
-
-        <div class="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-            <div class="group relative">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-01.jpg" alt="Front of men's Basic Tee in black." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                <div class="mt-4 flex justify-between">
-                    <div>
-                        <h3 class="text-sm text-gray-700">
-                            <a href="#">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                Basic Tee
-                            </a>
-                        </h3>
-                        <p class="mt-1 text-sm text-gray-500">Black</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900">$35</p>
-                </div>
+<!-- Hero Section -->
+<div class="relative overflow-hidden bg-white">
+    <div class="pt-16 pb-80 sm:pt-24 sm:pb-40 lg:pt-40 lg:pb-48">
+        <div class="relative mx-auto max-w-7xl px-4 sm:static sm:px-6 lg:px-8">
+            <div class="sm:max-w-lg">
+                <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Summer styles are finally here</h1>
+                <p class="mt-4 text-xl text-gray-500">This year, our new summer collection will shelter you from the harsh elements of a world that doesn't care if you live or die.</p>
             </div>
-
-            <div class="group relative">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-02.jpg" alt="Front of men's Basic Tee in white." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                <div class="mt-4 flex justify-between">
-                    <div>
-                        <h3 class="text-sm text-gray-700">
-                            <a href="#">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                Basic Tee
-                            </a>
-                        </h3>
-                        <p class="mt-1 text-sm text-gray-500">Aspen White</p>
+            <div>
+                <div class="mt-10">
+                    <!-- Decorative image grid -->
+                    <div aria-hidden="true" class="pointer-events-none lg:absolute lg:inset-y-0 lg:mx-auto lg:w-full lg:max-w-7xl">
+                        <div class="absolute transform sm:top-0 sm:left-1/2 sm:translate-x-8 lg:top-1/2 lg:left-1/2 lg:translate-x-8 lg:-translate-y-1/2">
+                            <div class="flex items-center space-x-6 lg:space-x-8">
+                                <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg sm:opacity-0 lg:opacity-100">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-01.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-02.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                </div>
+                                <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-03.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-04.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-05.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                </div>
+                                <div class="grid shrink-0 grid-cols-1 gap-y-6 lg:gap-y-8">
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-06.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                    <div class="h-64 w-44 overflow-hidden rounded-lg">
+                                        <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-03-hero-image-tile-07.jpg" alt="" class="size-full object-cover" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <p class="text-sm font-medium text-gray-900">$35</p>
-                </div>
-            </div>
 
-            <div class="group relative">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-03.jpg" alt="Front of men's Basic Tee in dark gray." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                <div class="mt-4 flex justify-between">
-                    <div>
-                        <h3 class="text-sm text-gray-700">
-                            <a href="#">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                Basic Tee
-                            </a>
-                        </h3>
-                        <p class="mt-1 text-sm text-gray-500">Charcoal</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900">$35</p>
-                </div>
-            </div>
-
-            <div class="group relative">
-                <img src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-01-related-product-04.jpg" alt="Front of men's Artwork Tee in peach with white and brown dots forming an isometric cube." class="aspect-square w-full rounded-md bg-gray-200 object-cover group-hover:opacity-75 lg:aspect-auto lg:h-80" />
-                <div class="mt-4 flex justify-between">
-                    <div>
-                        <h3 class="text-sm text-gray-700">
-                            <a href="#">
-                                <span aria-hidden="true" class="absolute inset-0"></span>
-                                Artwork Tee
-                            </a>
-                        </h3>
-                        <p class="mt-1 text-sm text-gray-500">Iso Dots</p>
-                    </div>
-                    <p class="text-sm font-medium text-gray-900">$35</p>
+                    <a href="<?= base_url('/shop/class-sessions') ?>" class="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-center font-medium text-white hover:bg-indigo-700">Shop Collection</a>
                 </div>
             </div>
         </div>

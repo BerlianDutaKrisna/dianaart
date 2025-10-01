@@ -2,8 +2,19 @@
 <?= $this->section('title'); ?>Dashboard — DianaArt<?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
-<div class="min-h-full">
 
+<?php if (session()->getFlashdata('success')): ?>
+    <div class="mb-4 rounded-md bg-green-50 p-4 text-green-700">
+        <?= esc(session()->getFlashdata('success')) ?>
+    </div>
+<?php endif; ?>
+<?php if (session()->getFlashdata('error')): ?>
+    <div class="mb-4 rounded-md bg-red-50 p-4 text-red-700">
+        <?= esc(session()->getFlashdata('error')) ?>
+    </div>
+<?php endif; ?>
+
+<div class="min-h-full">
     <!-- Page header -->
     <header class="relative bg-white shadow-sm">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">

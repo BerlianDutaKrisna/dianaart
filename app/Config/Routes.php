@@ -17,6 +17,7 @@ $routes->get('/logout', 'User::logout');
 $routes->get('/dashboard', 'Dashboard::index');
 $routes->get('/shop/categories', 'Shop::categories');
 $routes->get('/shop/products', 'Shop::products');
+$routes->get('/shop/class-sessions', 'Shop::classSessions');
 
 // CRUD User
 $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -48,6 +49,7 @@ $routes->group('products', ['namespace' => 'App\Controllers'], function ($routes
     $routes->get('show/(:num)', 'Product::show/$1');
 });
 
+// CRUD Classes
 $routes->get('classes', 'Classes::index');
 $routes->get('classes/create', 'Classes::create');
 $routes->post('classes/store', 'Classes::store');
@@ -55,3 +57,12 @@ $routes->get('classes/edit/(:num)', 'Classes::edit/$1');
 $routes->post('classes/update/(:num)', 'Classes::update/$1');
 $routes->get('classes/show/(:num)', 'Classes::show/$1');
 $routes->post('classes/delete/(:num)', 'Classes::delete/$1');
+
+// CRUD Class Sessions
+$routes->get('class-sessions', 'ClassSessions::index');
+$routes->get('class-sessions/create', 'ClassSessions::create');
+$routes->post('class-sessions/store', 'ClassSessions::store');
+$routes->get('class-sessions/edit/(:num)', 'ClassSessions::edit/$1');
+$routes->post('class-sessions/update/(:num)', 'ClassSessions::update/$1');
+$routes->get('class-sessions/show/(:num)', 'ClassSessions::show/$1');
+$routes->post('class-sessions/delete/(:num)', 'ClassSessions::delete/$1');
