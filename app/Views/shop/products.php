@@ -1,10 +1,5 @@
 <?= $this->extend('template/layout'); ?>
-
-<?= $this->section('title'); ?>Shop<?= $this->endSection(); ?>
-
-<?= $this->section('navbar'); ?>
-<!-- kosong, tidak ada navbar -->
-<?= $this->endSection(); ?>
+<?= $this->section('title'); ?>Products<?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 <div class="bg-white">

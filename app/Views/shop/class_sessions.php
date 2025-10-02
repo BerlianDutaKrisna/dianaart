@@ -1,9 +1,5 @@
 <?= $this->extend('template/layout'); ?>
-<?= $this->section('title'); ?>Class Sessions — DianaArt<?= $this->endSection(); ?>
-
-<?= $this->section('navbar'); ?>
-<!-- (opsional) navbar-mu di sini, atau pakai default dari layout -->
-<?= $this->endSection(); ?>
+<?= $this->section('title'); ?>Class Sessions<?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 <div class="bg-gray-100">

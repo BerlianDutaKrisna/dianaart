@@ -82,8 +82,8 @@ class User extends BaseController
     // Logout
     public function logout()
     {
-        $this->session->destroy();
-        return redirect()->to('/login')->with('success', 'Berhasil logout.');
+        $this->session->remove(['isLoggedIn', 'user_id', 'user_name', 'user_role']);
+        return redirect()->to('/')->with('success', 'Anda sudah logout.');
     }
 
     // CRUD User
@@ -109,8 +109,8 @@ class User extends BaseController
     public function update($id)
     {
         $rules = [
-            'name' => 'required|min_length[3]|max_length[100]',
-            'email' => "required|valid_email|is_unique[users.email,id,$id]",
+            'name'  => 'required|min_length[3]|max_length[100]',
+            'email' => "required|valid_email|is_unique[users.email,id,{$id}]",
         ];
 
         if (!$this->validate($rules)) {
@@ -118,8 +118,10 @@ class User extends BaseController
         }
 
         $data = [
-            'name' => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
+            'name'       => $this->request->getPost('name'),
+            'email'      => $this->request->getPost('email'),
+            'birth_date' => $this->request->getPost('birth_date'),
+            'phone'      => $this->request->getPost('phone'),
         ];
 
         if ($this->request->getPost('password')) {
@@ -128,7 +130,14 @@ class User extends BaseController
 
         $this->userModel->update($id, $data);
 
-        return redirect()->to('/user')->with('success', 'User berhasil diperbarui.');
+        // cek role dari session
+        $role = session()->get('user_role');
+
+        if ($role === 'admin') {
+            return redirect()->to('/user')->with('success', 'User berhasil diperbarui.');
+        } else {
+            return redirect()->to('/')->with('success', 'Profil berhasil diperbarui.');
+        }
     }
 
     public function delete($id)

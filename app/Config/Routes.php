@@ -12,6 +12,7 @@ $routes->get('/register', 'User::register');
 $routes->post('/user/save', 'User::save');
 $routes->get('/login', 'User::login');
 $routes->post('/login/auth', 'User::auth');
+$routes->post('logout', 'User::logout');
 $routes->get('/logout', 'User::logout');
 
 $routes->get('/dashboard', 'Dashboard::index');
