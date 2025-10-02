@@ -66,3 +66,12 @@ $routes->get('class-sessions/edit/(:num)', 'ClassSessions::edit/$1');
 $routes->post('class-sessions/update/(:num)', 'ClassSessions::update/$1');
 $routes->get('class-sessions/show/(:num)', 'ClassSessions::show/$1');
 $routes->post('class-sessions/delete/(:num)', 'ClassSessions::delete/$1');
+
+// Routes untuk Discounts
+$routes->get('discounts', 'Discounts::index');
+$routes->get('discounts/create', 'Discounts::create');
+$routes->post('discounts/store', 'Discounts::store');
+$routes->get('discounts/edit/(:num)', 'Discounts::edit/$1');
+$routes->post('discounts/update/(:num)', 'Discounts::update/$1');
+$routes->get('discounts/show/(:num)', 'Discounts::show/$1'); 
+$routes->post('discounts/delete/(:num)', 'Discounts::delete/$1');

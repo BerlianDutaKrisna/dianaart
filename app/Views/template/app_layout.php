@@ -32,7 +32,7 @@
             <div class="flex h-16 items-center justify-between">
                 <div class="flex items-center">
                     <div class="shrink-0">
-                        <img src="<?= base_url('img/Dianaart.png'); ?>" alt="DianaArt" class="size-8" />
+                        <a href="<?= base_url('/'); ?>"><img src="<?= base_url('img/Dianaart.png'); ?>" alt="DianaArt" class="size-8" /></a>
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
@@ -40,8 +40,8 @@
                             <a href="<?= base_url('dashboard'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Dashboard</a>
                             <a href="<?= base_url('/classes'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class</a>
                             <a href="<?= base_url('/class-sessions'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class Session</a>
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Calendar</a>
-                            <a href="#" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Reports</a>
+                            <a href="<?= base_url('/discounts'); ?>"" class=" rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Discount</a>
+                            <a href="<?= base_url('/class-sessions'); ?>"" class=" rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Reports</a>
                         </div>
                     </div>
                 </div>
@@ -54,8 +54,8 @@
                 <a href="<?= base_url('dashboard'); ?>" aria-current="page" class="block rounded-md bg-gray-900 px-3 py-2 text-base font-medium text-white">Dashboard</a>
                 <a href="<?= base_url('/classes'); ?>" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class</a>
                 <a href="<?= base_url('/class-sessions'); ?>" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class Session</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Calendar</a>
-                <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Reports</a>
+                <a href="<?= base_url('/discounts'); ?>"" class=" block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Discount</a>
+                <a href="<?= base_url('/class-sessions'); ?>"" class=" block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-white/5 hover:text-white">Reports</a>
             </div>
         </el-disclosure>
     </nav>
