@@ -8,49 +8,121 @@
             <h2 class="text-2xl font-bold text-gray-900">Collections</h2>
 
             <div class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:space-y-0 lg:gap-x-6">
-                <?php if (!empty($cards)): ?>
+                <?php if (!empty($cards) && is_array($cards)): ?>
                     <?php foreach ($cards as $card): ?>
                         <?php
-                        $img = !empty($card['class_image'])
-                            ? base_url('uploads/classes/' . $card['class_image'])
-                            : 'https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-edition-01.jpg';
+                        // Safe getters (fallback ke "")
+                        $classId         = $card['class_id']            ?? '';
+                        $sessionId       = $card['session_id']          ?? '';
+                        $classTitle      = $card['class_title']         ?? '';
+                        $sessionName     = $card['session_name']        ?? ($card['name'] ?? '');
+                        $statusBadge     = $card['status_badge']        ?? '';
+                        $sessionLevel    = $card['session_level']       ?? ($card['level'] ?? '');
+                        $sessionCapacity = $card['session_capacity']    ?? ($card['capacity'] ?? '');
+                        $booked          = $card['booked']              ?? '';
+                        $remaining       = $card['remaining']           ?? '';
+                        $location        = $card['location']            ?? '';
+                        $scheduleDate    = $card['schedule_date']       ?? '';
+                        $dateFmt         = $card['date_fmt']            ?? '';
+                        $startTime       = $card['start_time']          ?? '';
+                        $endTime         = $card['end_time']            ?? '';
+                        $timeFmt         = $card['time_fmt']            ?? '';
+                        $classPrice      = $card['class_price']         ?? '';
+                        $priceFmt        = $card['price_fmt']           ?? '';
+                        $totalSessions   = $card['total_sessions']      ?? '';
+                        $sessionImgUrl   = $card['session_image_url']   ?? '';
+                        $classImgUrl     = $card['class_image_url']     ?? '';
+                        $classImage      = $card['class_image']         ?? '';
 
-                        $title = esc($card['class_title'] ?? 'Untitled Class');
-                        $count = (int) ($sessionCounts[$card['class_id']] ?? 0);
+                        // Gambar: session -> class -> file class_image -> "" (jangan paksa placeholder)
+                        $img = $sessionImgUrl !== '' ? $sessionImgUrl
+                            : ($classImgUrl !== '' ? $classImgUrl
+                                : ($classImage !== '' ? base_url('uploads/classes/' . $classImage) : ''));
 
-                        // subtitle / deskripsi kecil di bawah title:
-                        if ($count > 0 && !empty($card['schedule_date'])) {
-                            $subtitle = 'Next: ' . esc($card['schedule_date']) .
-                                (!empty($card['start_time']) ? (' • ' . esc($card['start_time']) . (!empty($card['end_time']) ? ('–' . esc($card['end_time'])) : '')) : '') .
-                                (!empty($card['location']) ? (' @ ' . esc($card['location'])) : '');
-                        } else {
-                            $subtitle = 'No upcoming session';
-                        }
+                        // Apakah punya sesi terdekat?
+                        $hasSession = ($scheduleDate !== '');
 
-                        // link tujuan (ganti sesuai kebutuhanmu: ke detail class atau ke daftar session per class)
-                        $href = base_url('classes/show/' . $card['class_id']); // jika kamu punya halaman detail class
-                        // Atau bisa juga ke listing session per class (buat route/filter sendiri):
-                        // $href = base_url('class-sessions?class_id=' . $card['class_id']);
+                        // Subtitle aman
+                        $when  = ($dateFmt !== '') ? $dateFmt : $scheduleDate;
+                        $time  = ($timeFmt !== '') ? $timeFmt : trim(($startTime !== '' ? $startTime : '') . (($startTime !== '' && $endTime !== '') ? '–' . $endTime : ''));
+                        $where = ($location !== '') ? (' @ ' . $location) : '';
+                        $subtitle = $hasSession
+                            ? trim("Next: " . trim($when) . ($time !== '' ? " • " . $time : '') . $where)
+                            : 'No upcoming session';
+
+                        // Badge/status aman
+                        $badge = $statusBadge !== '' ? $statusBadge : ($hasSession ? 'Scheduled' : 'No sessions');
+
+                        // Harga aman (gunakan price_fmt kalau ada; kalau tidak, coba dari class_price; selain itu "")
+                        $priceText = $priceFmt !== '' ? $priceFmt : ($classPrice !== '' ? ('Rp ' . number_format((float)$classPrice, 0, ',', '.')) : '');
+
+                        // Count aman
+                        $safeCounts = isset($sessionCounts) && is_array($sessionCounts) ? $sessionCounts : [];
+                        $count = (int) ($safeCounts[$classId] ?? ($totalSessions !== '' ? $totalSessions : 0));
+
+                        // Link tujuan aman (boleh dikosongkan)
+                        $href = ($hasSession && $sessionId !== '') ? base_url('class-sessions/' . $sessionId)
+                            : ($classId !== '' ? base_url('classes/show/' . $classId) : '');
                         ?>
                         <div class="group relative">
-                            <img
-                                src="<?= $img; ?>"
-                                alt="<?= $title; ?>"
-                                class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square" />
+                            <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>
 
-                            <h3 class="mt-6 text-sm text-gray-500">
-                                <a href="<?= $href; ?>">
-                                    <span class="absolute inset-0"></span>
-                                    <?= $title; ?>
-                                </a>
-                            </h3>
-
-                            <p class="text-base font-semibold text-gray-900">
-                                <?= esc($subtitle); ?>
-                                <?php if ($count > 1): ?>
-                                    <span class="text-sm text-gray-500"> • <?= $count; ?> sessions total</span>
+                                <?php if ($img !== ''): ?>
+                                    <img
+                                        src="<?= esc($img); ?>"
+                                        alt="<?= esc($classTitle !== '' ? $classTitle : ($sessionName !== '' ? $sessionName : '')); ?>"
+                                        class="w-full rounded-lg bg-white object-cover group-hover:opacity-75 max-sm:h-80 sm:aspect-[2/1] lg:aspect-square" />
                                 <?php endif; ?>
-                            </p>
+
+                                <?php if ($href !== ''): ?></a><?php endif; ?>
+
+                            <?php if ($classTitle !== ''): ?>
+                                <h3 class="mt-6 text-sm text-gray-500">
+                                    <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><span class="absolute inset-0"></span><?php endif; ?>
+                                        <?= esc($classTitle); ?>
+                                        <?php if ($href !== ''): ?></a><?php endif; ?>
+                                </h3>
+                            <?php endif; ?>
+
+                            <div class="mt-1 flex items-center gap-2">
+                                <?php if ($badge !== ''): ?>
+                                    <span class="inline-block rounded border px-2 py-0.5 text-xs text-gray-700">
+                                        <?= esc($badge); ?>
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php if ($sessionName !== ''): ?>
+                                    <span class="text-xs text-gray-500"><?= esc($sessionName); ?></span>
+                                <?php endif; ?>
+                            </div>
+
+                            <?php if ($subtitle !== ''): ?>
+                                <p class="mt-1 text-base font-semibold text-gray-900">
+                                    <?= esc($subtitle); ?>
+                                    <?php if ($count > 1): ?>
+                                        <span class="text-sm text-gray-500"> • <?= esc($count); ?> sessions total</span>
+                                    <?php endif; ?>
+                                </p>
+                            <?php endif; ?>
+
+                            <?php if ($priceText !== ''): ?>
+                                <p class="text-sm text-gray-700"><?= esc($priceText); ?></p>
+                            <?php endif; ?>
+
+                            <?php if ($sessionLevel !== ''): ?>
+                                <p class="text-sm text-gray-500">Level: <?= esc($sessionLevel); ?></p>
+                            <?php endif; ?>
+
+                            <?php if ($sessionCapacity !== '' || $booked !== '' || $remaining !== ''): ?>
+                                <p class="text-sm text-gray-500">
+                                    <?php if ($sessionCapacity !== ''): ?>
+                                        Capacity: <?= esc($sessionCapacity); ?>
+                                    <?php endif; ?>
+                                    <?php if ($booked !== '' || $remaining !== ''): ?>
+                                        (<?php if ($booked !== ''): ?>Booked: <?= esc($booked); ?><?php endif; ?><?= ($booked !== '' && $remaining !== '') ? ', ' : '' ?><?php if ($remaining !== ''): ?>Remaining: <?= esc($remaining); ?><?php endif; ?>)
+                                    <?php endif; ?>
+                                </p>
+                            <?php endif; ?>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
