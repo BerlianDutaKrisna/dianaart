@@ -76,3 +76,12 @@ $routes->get('discounts/edit/(:num)', 'Discounts::edit/$1');
 $routes->post('discounts/update/(:num)', 'Discounts::update/$1');
 $routes->get('discounts/show/(:num)', 'Discounts::show/$1'); 
 $routes->post('discounts/delete/(:num)', 'Discounts::delete/$1');
+
+// --- Registration ---
+// Registration
+$routes->get('register', 'Registration::create');
+$routes->get('register/(:num)', 'Registration::create/$1');
+$routes->post('register', 'Registration::store');
+
+// Success (pakai ID registrasi agar bisa tampilkan detailnya)
+$routes->get('register/success/(:num)', 'Registration::success/$1');

@@ -61,9 +61,20 @@
                         $count = (int) ($safeCounts[$classId] ?? ($totalSessions !== '' ? $totalSessions : 0));
 
                         // Link tujuan aman (boleh dikosongkan)
-                        $href = ($hasSession && $sessionId !== '') ? base_url('class-sessions/' . $sessionId)
-                            : ($classId !== '' ? base_url('classes/show/' . $classId) : '');
-                        ?>
+                        $userId    = session('user_id') ?? null;
+                        $hasSession = ($scheduleDate !== '');
+                        $href = '';
+
+                        if (empty($userId)) {
+                            // Belum login -> langsung ke halaman login
+                            $href = base_url('login');
+                        } else {
+                            // Sudah login -> arahkan ke register
+                            $href = ($hasSession && $sessionId !== '')
+                                ? base_url('register/' . $sessionId)
+                                : base_url('register');
+                        }
+                    ?>
                         <div class="group relative">
                             <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>
 

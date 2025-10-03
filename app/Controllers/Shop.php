@@ -197,7 +197,7 @@ class Shop extends BaseController
             }
             return $aHas ? -1 : ($bHas ? 1 : 0);
         });
-
+        
         return view('shop/class_sessions', [
             'cards'         => $cards,
             'sessionCounts' => $sessionCounts,
