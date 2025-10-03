@@ -23,8 +23,6 @@ class CreateRegistrationsTable extends Migration
             'updated_at'    => ['type' => 'DATETIME', 'null' => true],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addUniqueKey(['user_id', 'session_id']);
-        $this->forge->addKey('session_id');
         $this->forge->addForeignKey('user_id', 'users', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('session_id', 'class_sessions', 'id', 'CASCADE', 'CASCADE');
         $this->forge->addForeignKey('discount_id', 'discounts', 'id', 'SET NULL', 'CASCADE');

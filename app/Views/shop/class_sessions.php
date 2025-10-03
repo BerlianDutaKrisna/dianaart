@@ -8,6 +8,25 @@
             <h2 class="text-2xl font-bold text-gray-900">Collections</h2>
 
             <div class="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:space-y-0 lg:gap-x-6">
+                <?php
+                $loginUserId = session('user_id') ?? null;
+                $proposalHref = empty($loginUserId) ? base_url('login') : base_url('proposals/create');
+                ?>
+
+                <!-- PROPOSAL CARD: selalu tampil -->
+                <div class="group relative border-2 border-dashed border-indigo-300 rounded-lg p-4 bg-white flex flex-col items-center justify-center text-center">
+                    <a href="<?= esc($proposalHref); ?>" class="absolute inset-0" aria-label="Create Proposal"></a>
+                    <div class="w-16 h-16 rounded-full bg-indigo-50 flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </div>
+                    <h3 class="mt-4 text-base font-semibold text-gray-900">Usulkan Kelas Baru</h3>
+                    <p class="mt-1 text-sm text-gray-600">Punya ide kelas? Kirim usulanmu di sini.</p>
+                    <div class="mt-4">
+                    </div>
+                </div>
+
                 <?php if (!empty($cards) && is_array($cards)): ?>
                     <?php foreach ($cards as $card): ?>
                         <?php
@@ -34,7 +53,7 @@
                         $classImgUrl     = $card['class_image_url']     ?? '';
                         $classImage      = $card['class_image']         ?? '';
 
-                        // Gambar: session -> class -> file class_image -> "" (jangan paksa placeholder)
+                        // Gambar: session -> class -> file class_image -> ""
                         $img = $sessionImgUrl !== '' ? $sessionImgUrl
                             : ($classImgUrl !== '' ? $classImgUrl
                                 : ($classImage !== '' ? base_url('uploads/classes/' . $classImage) : ''));
@@ -53,28 +72,19 @@
                         // Badge/status aman
                         $badge = $statusBadge !== '' ? $statusBadge : ($hasSession ? 'Scheduled' : 'No sessions');
 
-                        // Harga aman (gunakan price_fmt kalau ada; kalau tidak, coba dari class_price; selain itu "")
+                        // Harga aman
                         $priceText = $priceFmt !== '' ? $priceFmt : ($classPrice !== '' ? ('Rp ' . number_format((float)$classPrice, 0, ',', '.')) : '');
 
                         // Count aman
                         $safeCounts = isset($sessionCounts) && is_array($sessionCounts) ? $sessionCounts : [];
                         $count = (int) ($safeCounts[$classId] ?? ($totalSessions !== '' ? $totalSessions : 0));
 
-                        // Link tujuan aman (boleh dikosongkan)
-                        $userId    = session('user_id') ?? null;
-                        $hasSession = ($scheduleDate !== '');
-                        $href = '';
-
-                        if (empty($userId)) {
-                            // Belum login -> langsung ke halaman login
-                            $href = base_url('login');
-                        } else {
-                            // Sudah login -> arahkan ke register
-                            $href = ($hasSession && $sessionId !== '')
-                                ? base_url('register/' . $sessionId)
-                                : base_url('register');
-                        }
-                    ?>
+                        // Link tujuan aman
+                        $userId = session('user_id') ?? null;
+                        $href = empty($userId)
+                            ? base_url('login')
+                            : (($hasSession && $sessionId !== '') ? base_url('register/' . $sessionId) : base_url('register'));
+                        ?>
                         <div class="group relative">
                             <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>
 
@@ -137,7 +147,6 @@
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p class="text-gray-600">Belum ada kelas aktif.</p>
                 <?php endif; ?>
             </div>
         </div>

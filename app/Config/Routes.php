@@ -82,6 +82,9 @@ $routes->post('discounts/delete/(:num)', 'Discounts::delete/$1');
 $routes->get('register', 'Registration::create');
 $routes->get('register/(:num)', 'Registration::create/$1');
 $routes->post('register', 'Registration::store');
-
-// Success (pakai ID registrasi agar bisa tampilkan detailnya)
 $routes->get('register/success/(:num)', 'Registration::success/$1');
+
+// Proposals
+$routes->get('proposals/create', 'ClassProposals::create');
+$routes->post('proposals', 'ClassProposals::store');
+$routes->get('proposals/success/(:num)', 'ClassProposals::success/$1');

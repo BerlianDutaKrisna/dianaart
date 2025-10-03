@@ -4,25 +4,25 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class RegistrationModel extends Model
+class ClassProposalModel extends Model
 {
-    protected $table            = 'registrations';
+    protected $table            = 'class_proposals';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-
     protected $returnType       = 'array';
-    protected $useSoftDeletes   = false;
 
     protected $allowedFields = [
         'user_id',
-        'session_id',
-        'discount_id',
-        'quantity',
-        'unit_price',
-        'subtotal',
-        'final_total',
+        'title',
+        'description',
+        'price',
+        'image',
+        'schedule_date',
+        'start_time',
+        'end_time',
+        'location', 
         'status',
-        'registered_at',
+        'is_active',
         'created_at',
         'updated_at',
     ];
