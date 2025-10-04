@@ -61,13 +61,84 @@
                         // Apakah punya sesi terdekat?
                         $hasSession = ($scheduleDate !== '');
 
-                        // Subtitle aman
-                        $when  = ($dateFmt !== '') ? $dateFmt : $scheduleDate;
-                        $time  = ($timeFmt !== '') ? $timeFmt : trim(($startTime !== '' ? $startTime : '') . (($startTime !== '' && $endTime !== '') ? '–' . $endTime : ''));
-                        $where = ($location !== '') ? (' @ ' . $location) : '';
-                        $subtitle = $hasSession
-                            ? trim("Next: " . trim($when) . ($time !== '' ? " • " . $time : '') . $where)
-                            : 'No upcoming session';
+                        // === Subtitle lengkap: Hari, DD MMM YYYY • HH:mm–HH:mm @ Lokasi ===
+                        $hasSession = ($scheduleDate !== '');
+
+                        $subtitle = 'Upcoming session'; // default
+                        if ($hasSession) {
+                            // Build DateTime dari input (aman walau jam kosong)
+                            $tz = new DateTimeZone('Asia/Jakarta');
+
+                            $dtStart = null;
+                            $dtEnd   = null;
+                            if (!empty($scheduleDate)) {
+                                $dtStart = new DateTimeImmutable(trim($scheduleDate . ' ' . ($startTime ?: '00:00')), $tz);
+                                if (!empty($endTime)) {
+                                    $dtEnd = new DateTimeImmutable(trim($scheduleDate . ' ' . $endTime), $tz);
+                                }
+                            }
+
+                            // Format tanggal (pakai Intl kalau tersedia)
+                            $dayDate = '';
+                            if ($dtStart) {
+                                if (class_exists('IntlDateFormatter')) {
+                                    // Contoh hasil: Sabtu, 04 Okt 2025
+                                    $fmtDate = new IntlDateFormatter(
+                                        'id_ID',
+                                        IntlDateFormatter::FULL,
+                                        IntlDateFormatter::NONE,
+                                        $tz->getName(),
+                                        IntlDateFormatter::GREGORIAN,
+                                        'EEEE, dd MMM yyyy'
+                                    );
+                                    $dayDate = $fmtDate->format($dtStart);
+                                } else {
+                                    // Fallback tanpa ekstensi intl
+                                    $dayDate = $dtStart->format('l, d M Y');
+                                }
+                            } else {
+                                // fallback ke nilai mentah jika benar-benar tak bisa parse
+                                $dayDate = $dateFmt !== '' ? $dateFmt : $scheduleDate;
+                            }
+
+                            // Format waktu
+                            $timePart = '';
+                            if ($dtStart && !empty($startTime)) {
+                                if (class_exists('IntlDateFormatter')) {
+                                    // Format jam 24h dengan titik: 09.00 / 09.00–11.30
+                                    $fmtTime = new IntlDateFormatter(
+                                        'id_ID',
+                                        IntlDateFormatter::NONE,
+                                        IntlDateFormatter::NONE,
+                                        $tz->getName(),
+                                        IntlDateFormatter::GREGORIAN,
+                                        'HH:mm'
+                                    );
+                                    $startStr = $fmtTime->format($dtStart);
+                                    $endStr   = $dtEnd ? $fmtTime->format($dtEnd) : '';
+                                } else {
+                                    $startStr = $dtStart->format('H:i');
+                                    $endStr   = $dtEnd ? $dtEnd->format('H:i') : '';
+                                }
+                                $timePart = $endStr !== '' ? ($startStr . '–' . $endStr) : $startStr;
+                            } else {
+                                // fallback ke timeFmt/mentah
+                                $timePart = ($timeFmt !== '') ? $timeFmt
+                                    : trim(($startTime !== '' ? $startTime : '') . (($startTime !== '' && $endTime !== '') ? '–' . $endTime : ''));
+                            }
+
+                            // Lokasi (opsional)
+                            $where = ($location !== '') ? (' @ ' . $location) : '';
+
+                            // Rakit final
+                            $pieces = [];
+                            if ($dayDate !== '')  $pieces[] = $dayDate;
+                            if ($timePart !== '') $pieces[] = $timePart;
+
+                            $subtitle = !empty($pieces)
+                                ? ('Next: ' . implode(' • ', $pieces) . $where)
+                                : ('Next: ' . ($where !== '' ? ltrim($where, ' ') : ''));
+                        }
 
                         // Badge/status aman
                         $badge = $statusBadge !== '' ? $statusBadge : ($hasSession ? 'Scheduled' : 'No sessions');
@@ -84,8 +155,8 @@
                         $href = empty($userId)
                             ? base_url('login')
                             : (($hasSession && $sessionId !== '')
-                                ? base_url('register/' . $sessionId)
-                                : "javascript:alert('Kelas ini belum bisa dibuka.');void(0);");
+                                ? base_url('registrations/create/' . $sessionId)
+                                : "javascript:alert('Kelas ini belum dibuka.');void(0);");
                         ?>
                         <div class="group relative">
                             <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>

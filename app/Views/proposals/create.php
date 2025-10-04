@@ -35,9 +35,8 @@
                     <?php if (!empty($errors['schedule_date'])): ?><p class="mt-1 text-sm text-red-600"><?= esc($errors['schedule_date']); ?></p><?php endif; ?>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700">Lokasi <span class="text-red-500">*</span></label>
-                    <input type="text" name="location" value="<?= esc(old('location')); ?>" class="mt-1 block w-full rounded border-gray-300" required />
-                    <?php if (!empty($errors['location'])): ?><p class="mt-1 text-sm text-red-600"><?= esc($errors['location']); ?></p><?php endif; ?>
+                    <label class="block text-sm font-medium text-gray-700">Description</label>
+                    <textarea name="description" rows="3" class="mt-1 w-full rounded border-gray-300"><?= old('description') ?></textarea>
                 </div>
             </div>
 

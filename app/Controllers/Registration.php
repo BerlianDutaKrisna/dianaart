@@ -226,7 +226,7 @@ class Registration extends BaseController
 
             $db->transCommit();
 
-            return redirect()->to(base_url('register/success/' . $regId))
+            return redirect()->to(base_url('registrations/success/' . $regId))
                 ->with('success', 'Registrasi berhasil dibuat.');
         } catch (\Throwable $e) {
             if ($db->transStatus() !== false) {
@@ -240,7 +240,7 @@ class Registration extends BaseController
 
     /* ======================
      * SUCCESS (tampilan sukses)
-     * GET /register/success/{id}
+     * GET /registrations/success/{id}
      * ====================== */
     public function success($id)
     {

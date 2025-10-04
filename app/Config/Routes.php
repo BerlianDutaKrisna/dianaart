@@ -73,9 +73,9 @@ $routes->get('discounts/show/(:num)', 'Discounts::show/$1');
 $routes->post('discounts/delete/(:num)', 'Discounts::delete/$1');
 
 // Registration
-// CRUD Registrations
-$routes->get('registrations', 'Registration::index');               
+$routes->get('registrations', 'Registration::index');
 $routes->get('registrations/create', 'Registration::create');
+$routes->get('registrations/create/(:num)', 'Registration::create/$1');
 $routes->post('registrations/store', 'Registration::store');
 $routes->get('registrations/show/(:num)', 'Registration::show/$1');
 $routes->get('registrations/edit/(:num)', 'Registration::edit/$1');

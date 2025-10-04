@@ -12,7 +12,7 @@ class CreateClassSessionsTable extends Migration
             'id'          => ['type' => 'INT', 'unsigned' => true, 'auto_increment' => true],
             'class_id'    => ['type' => 'INT', 'unsigned' => true],
             'name'        => ['type' => 'VARCHAR', 'constraint' => 100],
-            'description' => ['type' => 'TEXT', 'null' => true],
+            'description' => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'level'       => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'capacity'    => ['type' => 'INT', 'unsigned' => true, 'null' => true],
             'schedule_date' => ['type' => 'DATE', 'null' => false],
