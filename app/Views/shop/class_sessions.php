@@ -152,11 +152,17 @@
 
                         // Link tujuan aman
                         $userId = session('user_id') ?? null;
-                        $href = empty($userId)
-                            ? base_url('login')
-                            : (($hasSession && $sessionId !== '')
-                                ? base_url('registrations/create/' . $sessionId)
-                                : "javascript:alert('Kelas ini belum dibuka.');void(0);");
+                        $remaining = (int) ($card['remaining'] ?? ($card['session_capacity'] ?? 0));
+
+                        if (empty($userId)) {
+                            $href = base_url('login');
+                        } elseif (!$hasSession || $sessionId === '') {
+                            $href = "javascript:alert('Kelas ini belum dibuka.');void(0);";
+                        } elseif ($remaining <= 0) {
+                            $href = "javascript:alert('Maaf kelas sudah penuh.');void(0);";
+                        } else {
+                            $href = base_url('registrations/create/' . $sessionId);
+                        }
                         ?>
                         <div class="group relative">
                             <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>
