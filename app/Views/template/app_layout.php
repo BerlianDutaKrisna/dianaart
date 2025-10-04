@@ -49,8 +49,9 @@
                             <a href="<?= base_url('dashboard'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Dashboard</a>
                             <a href="<?= base_url('classes'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class</a>
                             <a href="<?= base_url('class-sessions'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class Session</a>
-                            <a href="<?= base_url('discounts'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Discount</a>
-                            <a href="<?= base_url('reports'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Reports</a>
+                            <a href="<?= base_url('proposals'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Proposals</a>
+                            <a href="<?= base_url('registrations'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Registration</a>
+                            <a href="<?= base_url('user'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Users</a>
                         </div>
                     </div>
                 </div>
@@ -158,11 +159,12 @@
                         <div class="mt-6 flow-root">
                             <div class="-my-6 divide-y divide-gray-500/10">
                                 <div class="space-y-2 py-6">
-                                    <a href="<?= base_url('dashboard'); ?>" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Dashboard</a>
-                                    <a href="<?= base_url('classes'); ?>" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Class</a>
-                                    <a href="<?= base_url('class-sessions'); ?>" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Class Session</a>
-                                    <a href="<?= base_url('discounts'); ?>" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Discount</a>
-                                    <a href="<?= base_url('reports'); ?>" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold text-gray-900 hover:bg-gray-50">Reports</a>
+                                    <a href="<?= base_url('dashboard'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Dashboard</a>
+                                    <a href="<?= base_url('classes'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class</a>
+                                    <a href="<?= base_url('class-sessions'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Class Session</a>
+                                    <a href="<?= base_url('proposals'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Proposals</a>
+                                    <a href="<?= base_url('registrations'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Registration</a>
+                                    <a href="<?= base_url('user'); ?>" class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-white/5 hover:text-white">Users</a>
                                 </div>
 
                                 <div class="py-6">

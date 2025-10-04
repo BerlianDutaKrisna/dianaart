@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ClassProposalModel;
+use CodeIgniter\Exceptions\PageNotFoundException;
 
 class ClassProposals extends BaseController
 {
@@ -13,6 +14,41 @@ class ClassProposals extends BaseController
     {
         $this->proposalModel = new ClassProposalModel();
         helper(['form', 'url']);
+    }
+
+    // GET /proposals
+    public function index()
+    {
+        // Jika ingin batasi hanya milik user login, uncomment baris where user_id = $userId
+        $userId = session('user_id') ?? null;
+
+        $data['proposals'] = $this->proposalModel
+            ->select('class_proposals.*, users.name as user_name')
+            ->join('users', 'users.id = class_proposals.user_id', 'left')
+            // ->where('class_proposals.user_id', (int) $userId)
+            ->orderBy('class_proposals.created_at', 'DESC')
+            ->findAll();
+
+        return view('proposals/index', $data);
+    }
+
+    // GET /proposals/show/{id}
+    public function show($id)
+    {
+        $proposal = $this->proposalModel
+            ->select('class_proposals.*, users.name as user_name, users.email as user_email')
+            ->join('users', 'users.id = class_proposals.user_id', 'left')
+            ->find((int) $id);
+
+        if (!$proposal) {
+            throw PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
+        }
+
+        $proposal['image_url'] = !empty($proposal['image'])
+            ? base_url('uploads/proposals/' . $proposal['image'])
+            : '';
+
+        return view('proposals/show', ['proposal' => $proposal]);
     }
 
     // GET /proposals/create
@@ -52,7 +88,7 @@ class ClassProposals extends BaseController
         if ($endTime === '')       $errors['end_time']      = 'Waktu selesai wajib diisi.';
         if ($location === '')      $errors['location']      = 'Lokasi wajib diisi.';
 
-        // Validasi rentang waktu (opsional tapi disarankan)
+        // Validasi rentang waktu
         if ($scheduleDate !== '' && $startTime !== '' && $endTime !== '') {
             $startTs = strtotime($scheduleDate . ' ' . $startTime);
             $endTs   = strtotime($scheduleDate . ' ' . $endTime);
@@ -61,7 +97,7 @@ class ClassProposals extends BaseController
             }
         }
 
-        // Validasi & upload image (opsional)
+        // Validasi & upload image
         $imageName = null;
         $file = $this->request->getFile('image');
         if ($file && $file->isValid() && !$file->hasMoved()) {
@@ -77,11 +113,8 @@ class ClassProposals extends BaseController
 
         if ($file && $file->isValid() && !$file->hasMoved()) {
             $imageName = $file->getRandomName();
-            $targetDir = FCPATH . 'uploads/proposals';
-            if (!is_dir($targetDir)) {
-                @mkdir($targetDir, 0755, true);
-            }
-            $file->move($targetDir, $imageName);
+            $this->ensureUploadDir();
+            $file->move($this->uploadDir(), $imageName);
         }
 
         $id = $this->proposalModel->insert([
@@ -102,6 +135,151 @@ class ClassProposals extends BaseController
             ->with('success', 'Usulan berhasil dikirim. Terima kasih!');
     }
 
+    // GET /proposals/edit/{id}
+    public function edit($id)
+    {
+        $userId = session('user_id') ?? null;
+        if (empty($userId)) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $proposal = $this->proposalModel->find((int) $id);
+        if (!$proposal) {
+            throw PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
+        }
+
+        // Guard: hanya pemilik atau admin
+        if (!$this->canManage($proposal)) {
+            return redirect()->to(base_url('proposals'))
+                ->with('error', 'Tidak punya akses untuk mengedit proposal ini.');
+        }
+
+        return view('proposals/edit', [
+            'proposal' => $proposal,
+            'errors'   => session('errors') ?? [],
+            'old'      => session()->getFlashdata('_ci_old_input') ?? [],
+        ]);
+    }
+
+    // POST /proposals/update/{id}
+    public function update($id)
+    {
+        $userId = session('user_id') ?? null;
+        if (empty($userId)) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $proposal = $this->proposalModel->find((int) $id);
+        if (!$proposal) {
+            throw PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
+        }
+
+        if (!$this->canManage($proposal)) {
+            return redirect()->to(base_url('proposals'))
+                ->with('error', 'Tidak punya akses untuk mengedit proposal ini.');
+        }
+
+        $title        = trim($this->request->getPost('title') ?? '');
+        $description  = trim($this->request->getPost('description') ?? '');
+        $price        = (float) ($this->request->getPost('price') ?? 0);
+        $scheduleDate = trim($this->request->getPost('schedule_date') ?? '');
+        $startTime    = trim($this->request->getPost('start_time') ?? '');
+        $endTime      = trim($this->request->getPost('end_time') ?? '');
+        $location     = trim($this->request->getPost('location') ?? '');
+        $status       = trim($this->request->getPost('status') ?? $proposal['status']);
+        $isActive     = (int) ($this->request->getPost('is_active') ?? $proposal['is_active']);
+
+        $errors = [];
+        if ($title === '')         $errors['title']         = 'Judul wajib diisi.';
+        if ($scheduleDate === '')  $errors['schedule_date'] = 'Tanggal wajib diisi.';
+        if ($startTime === '')     $errors['start_time']    = 'Waktu mulai wajib diisi.';
+        if ($endTime === '')       $errors['end_time']      = 'Waktu selesai wajib diisi.';
+        if ($location === '')      $errors['location']      = 'Lokasi wajib diisi.';
+
+        // Validasi rentang waktu
+        if ($scheduleDate !== '' && $startTime !== '' && $endTime !== '') {
+            $startTs = strtotime($scheduleDate . ' ' . $startTime);
+            $endTs   = strtotime($scheduleDate . ' ' . $endTime);
+            if ($startTs !== false && $endTs !== false && $endTs <= $startTs) {
+                $errors['end_time'] = 'Waktu selesai harus setelah waktu mulai.';
+            }
+        }
+
+        // Cek file baru (opsional)
+        $file = $this->request->getFile('image');
+        $newImage = null;
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $ext = strtolower($file->getExtension() ?? '');
+            if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+                $errors['image'] = 'Format gambar harus jpg, jpeg, png, atau webp.';
+            }
+        }
+
+        if (!empty($errors)) {
+            return redirect()->back()->withInput()->with('errors', $errors);
+        }
+
+        // Upload & replace
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $newImage = $file->getRandomName();
+            $this->ensureUploadDir();
+            $file->move($this->uploadDir(), $newImage);
+
+            // hapus yang lama jika ada
+            if (!empty($proposal['image'])) {
+                $this->deleteImage($proposal['image']);
+            }
+        }
+
+        $payload = [
+            'title'         => $title,
+            'description'   => $description,
+            'price'         => $price,
+            'schedule_date' => $scheduleDate,
+            'start_time'    => $startTime,
+            'end_time'      => $endTime,
+            'location'      => $location,
+            'status'        => $status,
+            'is_active'     => $isActive,
+        ];
+        if ($newImage !== null) {
+            $payload['image'] = $newImage;
+        }
+
+        $this->proposalModel->update((int) $id, $payload);
+
+        return redirect()->to(base_url('proposals/show/' . $id))
+            ->with('success', 'Proposal berhasil diperbarui.');
+    }
+
+    // POST /proposals/delete/{id}
+    public function delete($id)
+    {
+        $userId = session('user_id') ?? null;
+        if (empty($userId)) {
+            return redirect()->to(base_url('login'));
+        }
+
+        $proposal = $this->proposalModel->find((int) $id);
+        if (!$proposal) {
+            return redirect()->to(base_url('proposals'))->with('error', 'Proposal tidak ditemukan.');
+        }
+
+        if (!$this->canManage($proposal)) {
+            return redirect()->to(base_url('proposals'))
+                ->with('error', 'Tidak punya akses untuk menghapus proposal ini.');
+        }
+
+        // hapus file gambar jika ada
+        if (!empty($proposal['image'])) {
+            $this->deleteImage($proposal['image']);
+        }
+
+        $this->proposalModel->delete((int) $id);
+
+        return redirect()->to(base_url('proposals'))->with('success', 'Proposal berhasil dihapus.');
+    }
+
     // GET /proposals/success/{id}
     public function success($id)
     {
@@ -116,14 +294,13 @@ class ClassProposals extends BaseController
             ->first();
 
         if (!$proposal) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
+            throw PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
         }
 
         $proposal['image_url'] = !empty($proposal['image'])
             ? base_url('uploads/proposals/' . $proposal['image'])
             : '';
 
-        // Formatting kecil untuk tampilan
         $proposal['date_fmt'] = !empty($proposal['schedule_date']) ? date('d M Y', strtotime($proposal['schedule_date'])) : '';
         $proposal['time_fmt'] = (!empty($proposal['start_time']) && !empty($proposal['end_time']))
             ? (date('H:i', strtotime($proposal['start_time'])) . '–' . date('H:i', strtotime($proposal['end_time'])))
@@ -133,5 +310,37 @@ class ClassProposals extends BaseController
             'proposal' => $proposal,
             'message'  => session('success') ?? '',
         ]);
+    }
+
+    /* =======================
+     * Helpers (private)
+     * ======================= */
+
+    private function canManage(array $proposal): bool
+    {
+        $userId   = (int) (session('user_id') ?? 0);
+        $userRole = (string) (session('user_role') ?? '');
+        return ($proposal['user_id'] == $userId) || ($userRole === 'admin');
+    }
+
+    private function uploadDir(): string
+    {
+        return FCPATH . 'uploads/proposals';
+    }
+
+    private function ensureUploadDir(): void
+    {
+        $dir = $this->uploadDir();
+        if (!is_dir($dir)) {
+            @mkdir($dir, 0755, true);
+        }
+    }
+
+    private function deleteImage(string $filename): void
+    {
+        $path = rtrim($this->uploadDir(), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $filename;
+        if (is_file($path)) {
+            @unlink($path);
+        }
     }
 }

@@ -1,5 +1,5 @@
-<?= $this->extend('template/layout'); ?>
-<?= $this->section('title'); ?>Edit user<?= $this->endSection(); ?>
+<?= $this->extend('template/app_layout'); ?>
+<?= $this->section('title'); ?>Edit User<?= $this->endSection(); ?>
 
 <?= $this->section('content'); ?>
 
