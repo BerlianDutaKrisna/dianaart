@@ -64,16 +64,8 @@
                 </div>
             <?php endif; ?>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                <input type="number" min="1" name="quantity" value="<?= esc(old('quantity', $quantity ?? 1)); ?>" class="mt-1 block w-32 rounded border-gray-300" />
-                <?php if (!empty($errors['quantity'])): ?>
-                    <p class="mt-1 text-sm text-red-600"><?= esc($errors['quantity']); ?></p>
-                <?php endif; ?>
-            </div>
-
             <div class="flex items-center gap-3">
-                <button type="submit" class="rounded bg-indigo-600 px-4 py-2 text-white hover:bg-indigo-700">
+                <button type="submit" class="rounded bg-stone-600 px-4 py-2 text-white hover:bg-stone-700">
                     Confirm Registration
                 </button>
                 <a href="<?= base_url('class-sessions'); ?>" class="text-sm text-gray-600 hover:underline">Cancel</a>

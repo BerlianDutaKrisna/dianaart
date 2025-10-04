@@ -104,25 +104,51 @@ class Registration extends BaseController
         if ($sessionId <= 0) $errors['session_id'] = 'Session harus dipilih.';
         if ($quantity <= 0)  $errors['quantity']   = 'Quantity minimal 1.';
 
+        // Ambil data session + harga kelas
         $row = $this->classSessionModel
             ->select('class_sessions.*, classes.price AS class_price')
             ->join('classes', 'classes.id = class_sessions.class_id', 'inner')
             ->where('class_sessions.id', $sessionId)
             ->first();
 
-        if (!$row) $errors['session_id'] = 'Session tidak ditemukan.';
+        if (!$row) {
+            $errors['session_id'] = 'Session tidak ditemukan.';
+        }
 
         if (!empty($errors)) {
             return redirect()->back()->withInput()->with('errors', $errors);
         }
 
-        // hitung harga
+        // Hitung harga
         $unitPrice  = (float) ($row['class_price'] ?? 0);
         $subtotal   = $unitPrice * $quantity;
-        $finalTotal = $subtotal;
+        $finalTotal = $subtotal; // jika nanti ada diskon, bisa dihitung di sini
+
+        // === KAPASITAS: cek & kurangi secara atomik di dalam transaksi ===
+        $db = \Config\Database::connect();
+        $db->transBegin(); // mulai transaksi
 
         try {
-            // returnInsertID = true agar kita dapat ID
+            // Opsi A (satu langkah atomik, tanpa lock manual):
+            // Kurangi capacity jika dan hanya jika capacity masih >= quantity
+            // Perhatikan: false di parameter ke-3 set() agar ekspresi tidak di-escape.
+            $affected = $db->table('class_sessions')
+                ->set('capacity', 'capacity - ' . (int)$quantity, false)
+                ->where('id', $sessionId)
+                ->where('capacity >=', (int)$quantity)
+                ->update();
+
+            // $affected adalah boolean, tapi kita perlu pastikan barisnya benar-benar ter-update.
+            if (!$affected || $db->affectedRows() !== 1) {
+                // Gagal mengurangi kapasitas: berarti sisa kapasitas tidak mencukupi.
+                $db->transRollback();
+                return redirect()->back()->withInput()->with('errors', [
+                    'capacity' => 'Kelas sudah penuh atau sisa kursi tidak mencukupi.'
+                ]);
+            }
+
+            // Jika sampai di sini, kapasitas sudah berhasil dikurangi.
+            // Lanjut insert registrations.
             $regId = $this->registrationModel->insert([
                 'user_id'       => $userId,
                 'session_id'    => $sessionId,
@@ -131,17 +157,32 @@ class Registration extends BaseController
                 'unit_price'    => $unitPrice,
                 'subtotal'      => $subtotal,
                 'final_total'   => $finalTotal,
-                'status'        => 'pending',
+                'status'        => 'Registered',
                 'registered_at' => date('Y-m-d H:i:s'),
             ], true);
+
+            if (!$regId) {
+                // Insert gagal -> rollback agar kapasitas kembali seperti semula
+                $db->transRollback();
+                return redirect()->back()->withInput()->with('errors', [
+                    'general' => 'Gagal menyimpan registrasi.'
+                ]);
+            }
+
+            // Semua ok -> commit
+            $db->transCommit();
+
+            return redirect()->to(base_url('register/success/' . $regId))
+                ->with('success', 'Registrasi berhasil dibuat.');
         } catch (\Throwable $e) {
+            // Ada error tak terduga: rollback
+            if ($db->transStatus() !== false) {
+                $db->transRollback();
+            }
             return redirect()->back()->withInput()->with('errors', [
                 'general' => 'Gagal menyimpan: ' . $e->getMessage()
             ]);
         }
-
-        return redirect()->to(base_url('register/success/' . $regId))
-            ->with('success', 'Registrasi berhasil dibuat.');
     }
 
     public function success($id)

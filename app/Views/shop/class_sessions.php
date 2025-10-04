@@ -83,7 +83,9 @@
                         $userId = session('user_id') ?? null;
                         $href = empty($userId)
                             ? base_url('login')
-                            : (($hasSession && $sessionId !== '') ? base_url('register/' . $sessionId) : base_url('register'));
+                            : (($hasSession && $sessionId !== '')
+                                ? base_url('register/' . $sessionId)
+                                : "javascript:alert('Kelas ini belum bisa dibuka.');void(0);");
                         ?>
                         <div class="group relative">
                             <?php if ($href !== ''): ?><a href="<?= esc($href); ?>"><?php endif; ?>

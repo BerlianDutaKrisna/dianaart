@@ -60,14 +60,6 @@
                     <div class="text-sm text-gray-500">Unit Price</div>
                     <div class="font-medium text-gray-900"><?= esc($reg['unit_price_fmt'] ?? ''); ?></div>
                 </div>
-                <div>
-                    <div class="text-sm text-gray-500">Subtotal</div>
-                    <div class="font-medium text-gray-900"><?= esc($reg['subtotal_fmt'] ?? ''); ?></div>
-                </div>
-                <div>
-                    <div class="text-sm text-gray-500">Total</div>
-                    <div class="font-medium text-gray-900"><?= esc($reg['final_total_fmt'] ?? ''); ?></div>
-                </div>
             </div>
 
             <div>
