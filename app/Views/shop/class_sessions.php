@@ -218,9 +218,6 @@
                                     <?php if ($sessionCapacity !== ''): ?>
                                         Capacity: <?= esc($sessionCapacity); ?>
                                     <?php endif; ?>
-                                    <?php if ($booked !== '' || $remaining !== ''): ?>
-                                        (<?php if ($booked !== ''): ?>Booked: <?= esc($booked); ?><?php endif; ?><?= ($booked !== '' && $remaining !== '') ? ', ' : '' ?><?php if ($remaining !== ''): ?>Remaining: <?= esc($remaining); ?><?php endif; ?>)
-                                    <?php endif; ?>
                                 </p>
                             <?php endif; ?>
                         </div>
