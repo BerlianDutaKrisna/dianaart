@@ -38,9 +38,9 @@
                             $orderedAt   = $o['ordered_at'] ?? null;
                             $statusVal   = strtolower(trim($o['order_status'] ?? ''));
                             $statusClass = 'bg-gray-100 text-gray-700';
-                            if (in_array($statusVal, ['paid', 'approved', 'success', 'complete', 'completed'])) {
+                            if (in_array($statusVal, ['paid', 'registered', 'success', 'complete', 'approved'])) {
                                 $statusClass = 'bg-emerald-100 text-emerald-700';
-                            } elseif (in_array($statusVal, ['pending', 'unpaid', 'waiting'])) {
+                            } elseif (in_array($statusVal, ['unpaid', 'pending', 'waiting'])) {
                                 $statusClass = 'bg-amber-100 text-amber-700';
                             } elseif (in_array($statusVal, ['cancelled', 'canceled', 'rejected', 'failed'])) {
                                 $statusClass = 'bg-rose-100 text-rose-700';
