@@ -153,8 +153,8 @@
         </div>
 
         <div class="mt-6 flex items-center gap-3">
-            <a href="<?= base_url('/proposals'); ?>" class="rounded bg-stone-600 px-4 py-2 text-white hover:bg-stone-700">
-                Kembali ke Proposal
+            <a href="<?= base_url('/shop/class-sessions'); ?>" class="rounded bg-stone-600 px-4 py-2 text-white hover:bg-stone-700">
+                Back to Classes
             </a>
 
             <?php if ($waUrl !== ''): ?>

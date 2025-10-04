@@ -152,11 +152,13 @@ class User extends BaseController
         if (!$userId) {
             return redirect()->to('/login');
         }
+
         $orders = $this->userModel->getAllOrders($userId);
+
         $data = [
-            'title'   => 'Daftar Order Saya',
-            'userId'  => $userId,
-            'orders'  => $orders,
+            'title'  => 'Daftar Order Saya',
+            'userId' => $userId,
+            'orders' => $orders,
         ];
 
         return view('user/orders', $data);

@@ -26,7 +26,9 @@ $routes->get('user', 'User::index');
 $routes->get('user/edit/(:num)', 'User::edit/$1');
 $routes->post('user/update/(:num)', 'User::update/$1');
 $routes->post('user/delete/(:num)', 'User::delete/$1');
+$routes->get('user/orders', 'User::orders');
 $routes->get('user/orders/(:num)', 'User::orders/$1');
+
 // CRUD Category
 $routes->get('category', 'Category::index');
 $routes->get('category/show', 'Category::show');
