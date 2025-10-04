@@ -15,7 +15,6 @@ class ClassProposalModel extends Model
         'user_id',
         'title',
         'description',
-        'price',
         'image',
         'schedule_date',
         'start_time',

@@ -124,6 +124,13 @@
                                                 </a>
                                             <?php endif; ?>
 
+                                            <?php if ($userId): ?>
+                                                <a href="<?= base_url('user/orders/' . $userId); ?>"
+                                                    class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                                                    My Orders
+                                                </a>
+                                            <?php endif; ?>
+
                                             <form action="<?= base_url('logout'); ?>" method="post">
                                                 <?= csrf_field(); ?>
                                                 <button class="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50">
@@ -176,6 +183,10 @@
 
                                                 <?php if ($userId): ?>
                                                     <a href="<?= base_url('user/edit/' . $userId) ?>" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">Profile</a>
+                                                <?php endif; ?>
+
+                                                <?php if ($userId): ?>
+                                                    <a href="<?= base_url('user/orders/' . $userId) ?>" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold text-gray-900 hover:bg-gray-50">My Orders</a>
                                                 <?php endif; ?>
 
                                                 <form action="<?= base_url('logout'); ?>" method="post" class="mt-2">

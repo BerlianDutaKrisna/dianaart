@@ -13,7 +13,6 @@ class CreateClassProposalsTable extends Migration
             'user_id'       => ['type' => 'INT', 'unsigned' => true],
             'title'         => ['type' => 'VARCHAR', 'constraint' => 150],
             'description'   => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
-            'price'         => ['type' => 'DECIMAL', 'constraint' => '10,2', 'default' => 0.00],
             'image'         => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => true],
             'schedule_date' => ['type' => 'DATE', 'null' => true],
             'start_time'    => ['type' => 'TIME', 'null' => true],

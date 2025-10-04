@@ -29,7 +29,6 @@
                     <th class="px-4 py-3">Title & Owner</th>
                     <th class="px-4 py-3">Tanggal & Waktu</th>
                     <th class="px-4 py-3">Lokasi</th>
-                    <th class="px-4 py-3">Price</th>
                     <th class="px-4 py-3">Status</th>
                     <th class="px-4 py-3">Action</th>
                 </tr>
@@ -71,7 +70,6 @@
                             <td class="px-4 py-3">
                                 <?= esc($p['location'] ?? '—') ?>
                             </td>
-                            <td class="px-4 py-3">Rp <?= number_format((float)($p['price'] ?? 0), 2, ',', '.') ?></td>
                             <td class="px-4 py-3">
                                 <?php $status = (string)($p['status'] ?? 'Draft'); ?>
                                 <?php if (strtolower($status) === 'approved'): ?>

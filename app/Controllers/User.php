@@ -145,4 +145,20 @@ class User extends BaseController
         $this->userModel->delete($id);
         return redirect()->to('/user')->with('success', 'User berhasil dihapus.');
     }
+
+    public function orders($userId = null)
+    {
+        $userId = (int) ($userId ?: session('user_id'));
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+        $orders = $this->userModel->getAllOrders($userId);
+        $data = [
+            'title'   => 'Daftar Order Saya',
+            'userId'  => $userId,
+            'orders'  => $orders,
+        ];
+
+        return view('user/orders', $data);
+    }
 }

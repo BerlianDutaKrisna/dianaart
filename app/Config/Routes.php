@@ -26,7 +26,7 @@ $routes->get('user', 'User::index');
 $routes->get('user/edit/(:num)', 'User::edit/$1');
 $routes->post('user/update/(:num)', 'User::update/$1');
 $routes->post('user/delete/(:num)', 'User::delete/$1');
-
+$routes->get('user/orders/(:num)', 'User::orders/$1');
 // CRUD Category
 $routes->get('category', 'Category::index');
 $routes->get('category/show', 'Category::show');
@@ -86,7 +86,7 @@ $routes->get('registrations/success/(:num)', 'Registration::success/$1');
 // Proposals
 $routes->get('proposals', 'ClassProposals::index');
 $routes->get('proposals/create', 'ClassProposals::create');
-$routes->post('proposals', 'ClassProposals::store');
+$routes->post('proposals/store', 'ClassProposals::store');
 $routes->get('proposals/show/(:num)', 'ClassProposals::show/$1');
 $routes->get('proposals/edit/(:num)', 'ClassProposals::edit/$1');
 $routes->post('proposals/update/(:num)', 'ClassProposals::update/$1');

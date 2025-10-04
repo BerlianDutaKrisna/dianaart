@@ -75,7 +75,6 @@ class ClassProposals extends BaseController
 
         $title        = trim($this->request->getPost('title') ?? '');
         $description  = trim($this->request->getPost('description') ?? '');
-        $price        = (float) ($this->request->getPost('price') ?? 0);
         $scheduleDate = trim($this->request->getPost('schedule_date') ?? '');
         $startTime    = trim($this->request->getPost('start_time') ?? '');
         $endTime      = trim($this->request->getPost('end_time') ?? '');
@@ -121,13 +120,12 @@ class ClassProposals extends BaseController
             'user_id'       => $userId,
             'title'         => $title,
             'description'   => $description,
-            'price'         => $price,
             'image'         => $imageName,
             'schedule_date' => $scheduleDate,
             'start_time'    => $startTime,
             'end_time'      => $endTime,
             'location'      => $location,
-            'status'        => 'pending',
+            'status'        => 'Pending',
             'is_active'     => 1,
         ], true);
 
@@ -181,7 +179,6 @@ class ClassProposals extends BaseController
 
         $title        = trim($this->request->getPost('title') ?? '');
         $description  = trim($this->request->getPost('description') ?? '');
-        $price        = (float) ($this->request->getPost('price') ?? 0);
         $scheduleDate = trim($this->request->getPost('schedule_date') ?? '');
         $startTime    = trim($this->request->getPost('start_time') ?? '');
         $endTime      = trim($this->request->getPost('end_time') ?? '');
@@ -234,7 +231,6 @@ class ClassProposals extends BaseController
         $payload = [
             'title'         => $title,
             'description'   => $description,
-            'price'         => $price,
             'schedule_date' => $scheduleDate,
             'start_time'    => $startTime,
             'end_time'      => $endTime,
@@ -283,33 +279,55 @@ class ClassProposals extends BaseController
     // GET /proposals/success/{id}
     public function success($id)
     {
+        // Guard sederhana: wajib login
         $userId = session('user_id') ?? null;
         if (empty($userId)) {
             return redirect()->to(base_url('login'));
         }
 
+        // Ambil data proposal milik user ini saja
         $proposal = $this->proposalModel
-            ->where('id', (int)$id)
-            ->where('user_id', (int)$userId)
+            ->select('class_proposals.*') // bisa ditambah join users bila perlu
+            ->where('class_proposals.id', (int) $id)
+            ->where('class_proposals.user_id', (int) $userId) // hanya milik user ini
             ->first();
 
         if (!$proposal) {
             throw PageNotFoundException::forPageNotFound('Proposal tidak ditemukan.');
         }
 
+        // URL gambar (jika ada)
         $proposal['image_url'] = !empty($proposal['image'])
             ? base_url('uploads/proposals/' . $proposal['image'])
             : '';
 
-        $proposal['date_fmt'] = !empty($proposal['schedule_date']) ? date('d M Y', strtotime($proposal['schedule_date'])) : '';
+        // Formatting jadwal (persis seperti style registrasi)
+        $proposal['date_fmt'] = !empty($proposal['schedule_date'])
+            ? date('d M Y', strtotime($proposal['schedule_date'])) : '';
         $proposal['time_fmt'] = (!empty($proposal['start_time']) && !empty($proposal['end_time']))
             ? (date('H:i', strtotime($proposal['start_time'])) . '–' . date('H:i', strtotime($proposal['end_time'])))
             : '';
 
-        return view('proposals/success', [
+        // (Opsional) kalau mau konsistensi naming seperti di registrasi:
+        $proposal['session_name']     = null; // tidak ada konsep session di proposal
+        $proposal['session_date']     = $proposal['schedule_date'] ?? '';
+        $proposal['session_start']    = $proposal['start_time'] ?? '';
+        $proposal['session_end']      = $proposal['end_time'] ?? '';
+        $proposal['session_location'] = $proposal['location'] ?? '';
+
+        // Data untuk view: samakan struktur dengan Registration success
+        $data = [
             'proposal' => $proposal,
             'message'  => session('success') ?? '',
-        ]);
+            'user'     => [
+                'name' => session('user_name') ?? '',
+            ],
+            // Nomor WA tujuan dalam format internasional (Indonesia: 62… tanpa +)
+            // Ganti ke nomor admin/CS kamu:
+            'wa_number_intl' => '6285733771515',
+        ];
+
+        return view('proposals/success', $data);
     }
 
     /* =======================
